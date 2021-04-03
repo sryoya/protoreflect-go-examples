@@ -1,0 +1,22 @@
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+package stropt;
+
+option go_package = "github.com/sryoya/ptypeopts/protobuf/stropt";
+
+extend google.protobuf.FieldOptions {
+    StringOpts opts = 50000;
+}
+
+message StringOpts {
+    optional int32 len = 1;
+    optional int32 max_len = 2;
+    optional int32 min_len = 3;
+
+    repeated string avaiable_chars = 10;
+    repeated string unavailable_chars = 11;
+
+    optional string suffix = 21;
+    optional string prefix = 22;
+    // TODO: add regexp to express available/unavailable patterns
+}
