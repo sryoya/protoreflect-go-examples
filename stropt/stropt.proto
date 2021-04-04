@@ -2,10 +2,10 @@ syntax = "proto3";
 import "google/protobuf/descriptor.proto";
 package stropt;
 
-option go_package = "github.com/sryoya/ptypeopts/protobuf/stropt";
+option go_package = "github.com/sryoya/reflect-go-examples/stropt";
 
 extend google.protobuf.FieldOptions {
-    StringOpts opts = 50000;
+    StringOpts opts = 52346;
 }
 
 message StringOpts {

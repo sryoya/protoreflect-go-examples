@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+package deprecatedopt;
+
+option go_package = "github.com/sryoya/reflect-go-examples/deprecatedopt";
+
+extend google.protobuf.MethodOptions {
+    DeprecatedOpts opts = 62345;
+}
+
+message DeprecatedOpts {
+    bool deprecated = 1;
+    optional string replaced_by = 2;
+}
