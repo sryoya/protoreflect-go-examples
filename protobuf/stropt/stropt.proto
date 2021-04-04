@@ -2,7 +2,7 @@ syntax = "proto3";
 import "google/protobuf/descriptor.proto";
 package stropt;
 
-option go_package = "github.com/sryoya/reflect-go-examples/stropt";
+option go_package = "github.com/sryoya/reflect-go-examples/protobuf/stropt";
 
 extend google.protobuf.FieldOptions {
     StringOpts opts = 52346;
