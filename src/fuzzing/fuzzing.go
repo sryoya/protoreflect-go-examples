@@ -17,16 +17,15 @@ var (
 
 func New() *TestMessage {
 	input := &TestMessage{}
-	res := Message(input.ProtoReflect())
-
-	proto.Merge(input, res)
+	Message(input)
 	return input
 }
 
 // Message is a function that returns a random dyanmicpb.Message constructed from a protoreflect.MessageDescriptor
-func Message(m protoreflect.Message) *dynamicpb.Message {
-	dm := dynamicpb.NewMessage(m.Descriptor())
-	fds := m.Descriptor().Fields()
+func Message(msg proto.Message) {
+	msgDesc := msg.ProtoReflect().Descriptor()
+	dm := dynamicpb.NewMessage(msgDesc)
+	fds := msgDesc.Fields()
 	// Iterate over *all* fields
 	for k := 0; k < fds.Len(); k++ {
 		fd := fds.Get(k)
@@ -51,5 +50,7 @@ func Message(m protoreflect.Message) *dynamicpb.Message {
 		}()
 		dm.Set(fd, v)
 	}
-	return dm
+
+	proto.Merge(msg, dm)
+	return
 }
