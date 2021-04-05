@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"time"
 
+	"google.golang.org/protobuf/proto"
+
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/dynamicpb"
 )
@@ -16,7 +18,9 @@ var (
 func New() *TestMessage {
 	input := &TestMessage{}
 	res := Message(input.ProtoReflect())
-	return res.Interface().(*TestMessage)
+
+	proto.Merge(input, res)
+	return input
 }
 
 // Message is a function that returns a random dyanmicpb.Message constructed from a protoreflect.MessageDescriptor
