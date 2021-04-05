@@ -1,7 +1,7 @@
 package fuzzing
 
 import (
-	"log"
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -22,35 +22,27 @@ func New() *TestMessage {
 }
 
 // Message is a function that returns a random dyanmicpb.Message constructed from a protoreflect.MessageDescriptor
-func Message(msg proto.Message) {
-	msgDesc := msg.ProtoReflect().Descriptor()
-	dm := dynamicpb.NewMessage(msgDesc)
-	fds := msgDesc.Fields()
+func Message(msg proto.Message) error {
+	mds := msg.ProtoReflect().Descriptor()
+	dm := dynamicpb.NewMessage(mds)
+	fds := mds.Fields()
 	// Iterate over *all* fields
 	for k := 0; k < fds.Len(); k++ {
 		fd := fds.Get(k)
-		v := func() protoreflect.Value {
-			var result protoreflect.Value
-			switch fd.Kind() {
-			case protoreflect.Int32Kind:
-				log.Println("[random:New] Int32")
-				result = protoreflect.ValueOfInt32(r.Int31())
-			case protoreflect.FloatKind:
-				log.Println("[random:New] Float32")
-				result = protoreflect.ValueOfFloat32(r.Float32())
-			case protoreflect.MessageKind:
-				// TODO: make it recursive
-			case protoreflect.StringKind:
-				log.Println("[random:New] String")
-				result = protoreflect.ValueOfString("X")
-			default:
-				log.Fatal("[random:New] unanticipated kind")
-			}
-			return result
-		}()
-		dm.Set(fd, v)
+		switch fd.Kind() {
+		case protoreflect.Int32Kind:
+			dm.Set(fd, protoreflect.ValueOfInt32(r.Int31()))
+		case protoreflect.FloatKind:
+			dm.Set(fd, protoreflect.ValueOfFloat32(r.Float32()))
+		case protoreflect.MessageKind:
+			// TODO: make it recursive
+		case protoreflect.StringKind:
+			dm.Set(fd, protoreflect.ValueOfString("X"))
+		default:
+			return fmt.Errorf("unexpected type: %v", fd.Kind())
+		}
 	}
 
 	proto.Merge(msg, dm)
-	return
+	return nil
 }
