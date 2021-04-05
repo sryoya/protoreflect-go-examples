@@ -1,0 +1,8 @@
+syntax = "proto3";
+package fuzzing;
+option go_package = "github.com/sryoya/reflect-go-examples/protobuf/fuzzing";
+
+message TestMessage {
+  string some_str = 1;
+  int32 some_int = 2;
+}
