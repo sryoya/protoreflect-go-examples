@@ -1,9 +1,7 @@
 package fuzzing
 
-import "testing"
+// func TestNew(t *testing.T) {
+// 	res := New()
 
-func TestNew(t *testing.T) {
-	res := New()
-
-	t.Errorf("%v", res)
-}
+// 	t.Errorf("%v", res)
+// }
