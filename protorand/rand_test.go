@@ -1,4 +1,4 @@
-package fuzzing
+package protorand
 
 // func TestNew(t *testing.T) {
 // 	res := New()
