@@ -1,6 +1,6 @@
 syntax = "proto3";
 package testproto;
-option go_package = "github.com/sryoya/reflect-go-examples/protorand/testproto";
+option go_package = "github.com/sryoya/protoreflet-go-examples/protorand/testproto";
 
 message TestMessage {
   string some_str = 1;

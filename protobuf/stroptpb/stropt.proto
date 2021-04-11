@@ -1,0 +1,19 @@
+syntax = "proto3";
+package stropt;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/sryoya/protoreflet-go-examplesples/protobuf/stroptpb";
+
+extend google.protobuf.FieldOptions {
+    StringOpts opts = 52346;
+}
+
+message StringOpts {
+    optional int32 len = 1;
+    // If len exists, these below fields would be ignored
+    optional int32 max_len = 2;
+    optional int32 min_len = 3;
+
+    // TODO: add more conditions like regexp, available/unavailable chars, etc.
+}

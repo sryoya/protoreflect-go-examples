@@ -2,7 +2,7 @@ syntax = "proto3";
 import "google/protobuf/descriptor.proto";
 package deprecatedopt;
 
-option go_package = "github.com/sryoya/reflect-go-examples/deprecatedopt";
+option go_package = "github.com/sryoya/protoreflet-go-examples/deprecatedoptpb";
 
 extend google.protobuf.MethodOptions {
     DeprecatedOpts opts = 62345;
