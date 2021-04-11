@@ -3,9 +3,9 @@ package stropt
 import (
 	"testing"
 
-	"github.com/sryoya/protoreflet-go-examples/stropt/testproto"
 	"google.golang.org/protobuf/proto"
-	// "github.com/sryoya/protoreflet-go-examples/stropt/testproto"
+
+	"github.com/sryoya/protoreflet-go-examples/stropt/testproto"
 )
 
 func TestIsRefund(t *testing.T) {
@@ -15,11 +15,7 @@ func TestIsRefund(t *testing.T) {
 	}{
 		"Return true if Refund": {
 			input: &testproto.TestMessage{
-				SomeInt: 10,
-				SomeStr: "Gopher",
-				SomeMsg: &testproto.ChildMessage{
-					SomeInt: 10,
-				},
+				SomeStr: "123456",
 			},
 			isErr: false,
 		},
@@ -30,8 +26,8 @@ func TestIsRefund(t *testing.T) {
 			// execution
 			res := Validate(tc.input)
 
-			if tc.isErr == (res != nil) {
-				t.Errorf("expected error: %v, but got:%v", tc.isErr, res)
+			if tc.isErr != (res == nil) {
+				t.Errorf("expecting error is %v, but got:%v", tc.isErr, res)
 			}
 		})
 	}

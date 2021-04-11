@@ -1,9 +1,9 @@
 syntax = "proto3";
-package stropt;
+package stroptpb;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/sryoya/protoreflet-go-examplesples/protobuf/stroptpb";
+option go_package = "github.com/sryoya/protoreflet-go-examples/protobuf/stroptpb";
 
 extend google.protobuf.FieldOptions {
     StringOpts opts = 52346;

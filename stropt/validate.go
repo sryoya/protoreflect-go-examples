@@ -31,7 +31,6 @@ func Validate(pb proto.Message) error {
 			errs = fmt.Errorf("%v\n%v", errs, err)
 		}
 
-		m.Clear(fd)
 		return true
 	})
 
@@ -65,7 +64,7 @@ func validateLength(opts *stroptpb.StringOpts, v string) error {
 	if valueLen < int(*minLen) {
 		return fmt.Errorf("invalid length, expected longer than or equal to:%v, but actual: %v", minLen, valueLen)
 	}
-	if valueLen < int(*maxLen) {
+	if valueLen > int(*maxLen) {
 		return fmt.Errorf("invalid length, expected shorter than or equal to:%v, but actual: %v", maxLen, valueLen)
 	}
 
