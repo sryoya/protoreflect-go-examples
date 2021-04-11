@@ -1,6 +1,6 @@
 syntax = "proto3";
-package fuzzing;
-option go_package = "github.com/sryoya/reflect-go-examples/protobuf/fuzzing";
+package testproto;
+option go_package = "github.com/sryoya/reflect-go-examples/protorand/testproto";
 
 message TestMessage {
   string some_str = 1;

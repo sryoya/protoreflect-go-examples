@@ -1,7 +1,9 @@
 package protorand
 
-// func TestNew(t *testing.T) {
-// 	res := New()
+import "testing"
 
-// 	t.Errorf("%v", res)
-// }
+func TestNew(t *testing.T) {
+	res := New()
+
+	t.Errorf("%v", res)
+}
