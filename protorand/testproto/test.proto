@@ -5,4 +5,11 @@ option go_package = "github.com/sryoya/reflect-go-examples/protorand/testproto";
 message TestMessage {
   string some_str = 1;
   int32 some_int = 2;
+  float some_float = 3;
+  bool some_bool = 4;
+  ChildMessage some_msg = 5;
+}
+
+message ChildMessage{
+  int32 some_int = 1;
 }
