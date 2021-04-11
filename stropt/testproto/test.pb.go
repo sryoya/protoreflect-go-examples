@@ -21,20 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type TestMessage struct {
+type MessageFixedLen struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SomeStr   string        `protobuf:"bytes,1,opt,name=some_str,json=someStr,proto3" json:"some_str,omitempty"`
-	SomeInt   int32         `protobuf:"varint,2,opt,name=some_int,json=someInt,proto3" json:"some_int,omitempty"`
-	SomeFloat float32       `protobuf:"fixed32,3,opt,name=some_float,json=someFloat,proto3" json:"some_float,omitempty"`
-	SomeBool  bool          `protobuf:"varint,4,opt,name=some_bool,json=someBool,proto3" json:"some_bool,omitempty"`
-	SomeMsg   *ChildMessage `protobuf:"bytes,5,opt,name=some_msg,json=someMsg,proto3" json:"some_msg,omitempty"`
+	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 }
 
-func (x *TestMessage) Reset() {
-	*x = TestMessage{}
+func (x *MessageFixedLen) Reset() {
+	*x = MessageFixedLen{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_stropt_testproto_test_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -42,13 +38,13 @@ func (x *TestMessage) Reset() {
 	}
 }
 
-func (x *TestMessage) String() string {
+func (x *MessageFixedLen) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TestMessage) ProtoMessage() {}
+func (*MessageFixedLen) ProtoMessage() {}
 
-func (x *TestMessage) ProtoReflect() protoreflect.Message {
+func (x *MessageFixedLen) ProtoReflect() protoreflect.Message {
 	mi := &file_stropt_testproto_test_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -60,56 +56,28 @@ func (x *TestMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TestMessage.ProtoReflect.Descriptor instead.
-func (*TestMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use MessageFixedLen.ProtoReflect.Descriptor instead.
+func (*MessageFixedLen) Descriptor() ([]byte, []int) {
 	return file_stropt_testproto_test_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *TestMessage) GetSomeStr() string {
+func (x *MessageFixedLen) GetValue() string {
 	if x != nil {
-		return x.SomeStr
+		return x.Value
 	}
 	return ""
 }
 
-func (x *TestMessage) GetSomeInt() int32 {
-	if x != nil {
-		return x.SomeInt
-	}
-	return 0
-}
-
-func (x *TestMessage) GetSomeFloat() float32 {
-	if x != nil {
-		return x.SomeFloat
-	}
-	return 0
-}
-
-func (x *TestMessage) GetSomeBool() bool {
-	if x != nil {
-		return x.SomeBool
-	}
-	return false
-}
-
-func (x *TestMessage) GetSomeMsg() *ChildMessage {
-	if x != nil {
-		return x.SomeMsg
-	}
-	return nil
-}
-
-type ChildMessage struct {
+type MessageMaxMinLen struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SomeInt int32 `protobuf:"varint,1,opt,name=some_int,json=someInt,proto3" json:"some_int,omitempty"`
+	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 }
 
-func (x *ChildMessage) Reset() {
-	*x = ChildMessage{}
+func (x *MessageMaxMinLen) Reset() {
+	*x = MessageMaxMinLen{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_stropt_testproto_test_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -117,13 +85,13 @@ func (x *ChildMessage) Reset() {
 	}
 }
 
-func (x *ChildMessage) String() string {
+func (x *MessageMaxMinLen) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChildMessage) ProtoMessage() {}
+func (*MessageMaxMinLen) ProtoMessage() {}
 
-func (x *ChildMessage) ProtoReflect() protoreflect.Message {
+func (x *MessageMaxMinLen) ProtoReflect() protoreflect.Message {
 	mi := &file_stropt_testproto_test_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -135,16 +103,110 @@ func (x *ChildMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChildMessage.ProtoReflect.Descriptor instead.
-func (*ChildMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use MessageMaxMinLen.ProtoReflect.Descriptor instead.
+func (*MessageMaxMinLen) Descriptor() ([]byte, []int) {
 	return file_stropt_testproto_test_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ChildMessage) GetSomeInt() int32 {
+func (x *MessageMaxMinLen) GetValue() string {
 	if x != nil {
-		return x.SomeInt
+		return x.Value
 	}
-	return 0
+	return ""
+}
+
+type MessageMinLen struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *MessageMinLen) Reset() {
+	*x = MessageMinLen{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_stropt_testproto_test_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MessageMinLen) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageMinLen) ProtoMessage() {}
+
+func (x *MessageMinLen) ProtoReflect() protoreflect.Message {
+	mi := &file_stropt_testproto_test_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageMinLen.ProtoReflect.Descriptor instead.
+func (*MessageMinLen) Descriptor() ([]byte, []int) {
+	return file_stropt_testproto_test_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *MessageMinLen) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+type MessageMaxLen struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *MessageMaxLen) Reset() {
+	*x = MessageMaxLen{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_stropt_testproto_test_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MessageMaxLen) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageMaxLen) ProtoMessage() {}
+
+func (x *MessageMaxLen) ProtoReflect() protoreflect.Message {
+	mi := &file_stropt_testproto_test_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageMaxLen.ProtoReflect.Descriptor instead.
+func (*MessageMaxLen) Descriptor() ([]byte, []int) {
+	return file_stropt_testproto_test_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *MessageMaxLen) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
 }
 
 var File_stropt_testproto_test_proto protoreflect.FileDescriptor
@@ -154,26 +216,24 @@ var file_stropt_testproto_test_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x2f, 0x74, 0x65, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x09, 0x74,
 	0x65, 0x73, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x20, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
 	0x75, 0x66, 0x2f, 0x73, 0x74, 0x72, 0x6f, 0x70, 0x74, 0x70, 0x62, 0x2f, 0x73, 0x74, 0x72, 0x6f,
-	0x70, 0x74, 0x70, 0x62, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xbd, 0x01, 0x0a, 0x0b, 0x54,
-	0x65, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x23, 0x0a, 0x08, 0x73, 0x6f,
-	0x6d, 0x65, 0x5f, 0x73, 0x74, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x08, 0xd2, 0xc7,
-	0x19, 0x04, 0x10, 0x05, 0x18, 0x03, 0x52, 0x07, 0x73, 0x6f, 0x6d, 0x65, 0x53, 0x74, 0x72, 0x12,
-	0x19, 0x0a, 0x08, 0x73, 0x6f, 0x6d, 0x65, 0x5f, 0x69, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x05, 0x52, 0x07, 0x73, 0x6f, 0x6d, 0x65, 0x49, 0x6e, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x6f,
-	0x6d, 0x65, 0x5f, 0x66, 0x6c, 0x6f, 0x61, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x02, 0x52, 0x09,
-	0x73, 0x6f, 0x6d, 0x65, 0x46, 0x6c, 0x6f, 0x61, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x6f, 0x6d,
-	0x65, 0x5f, 0x62, 0x6f, 0x6f, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x73, 0x6f,
-	0x6d, 0x65, 0x42, 0x6f, 0x6f, 0x6c, 0x12, 0x32, 0x0a, 0x08, 0x73, 0x6f, 0x6d, 0x65, 0x5f, 0x6d,
-	0x73, 0x67, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x74, 0x65, 0x73, 0x74, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x68, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x52, 0x07, 0x73, 0x6f, 0x6d, 0x65, 0x4d, 0x73, 0x67, 0x22, 0x29, 0x0a, 0x0c, 0x43, 0x68,
-	0x69, 0x6c, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x73, 0x6f,
-	0x6d, 0x65, 0x5f, 0x69, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x73, 0x6f,
-	0x6d, 0x65, 0x49, 0x6e, 0x74, 0x42, 0x3c, 0x5a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x72, 0x79, 0x6f, 0x79, 0x61, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x72, 0x65, 0x66, 0x6c, 0x65, 0x74, 0x2d, 0x67, 0x6f, 0x2d, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c,
-	0x65, 0x73, 0x2f, 0x73, 0x74, 0x72, 0x6f, 0x70, 0x74, 0x2f, 0x74, 0x65, 0x73, 0x74, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x74, 0x70, 0x62, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2f, 0x0a, 0x0f, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x46, 0x69, 0x78, 0x65, 0x64, 0x4c, 0x65, 0x6e, 0x12, 0x1c, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x06, 0xd2, 0xc7,
+	0x19, 0x02, 0x08, 0x06, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x32, 0x0a, 0x10, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x4d, 0x61, 0x78, 0x4d, 0x69, 0x6e, 0x4c, 0x65, 0x6e, 0x12,
+	0x1e, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x08,
+	0xd2, 0xc7, 0x19, 0x04, 0x10, 0x05, 0x18, 0x03, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22,
+	0x2d, 0x0a, 0x0d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x4d, 0x69, 0x6e, 0x4c, 0x65, 0x6e,
+	0x12, 0x1c, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
+	0x06, 0xd2, 0xc7, 0x19, 0x02, 0x18, 0x03, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x2d,
+	0x0a, 0x0d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x4d, 0x61, 0x78, 0x4c, 0x65, 0x6e, 0x12,
+	0x1c, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x06,
+	0xd2, 0xc7, 0x19, 0x02, 0x10, 0x05, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x3c, 0x5a,
+	0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x72, 0x79, 0x6f,
+	0x79, 0x61, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x72, 0x65, 0x66, 0x6c, 0x65, 0x74, 0x2d, 0x67,
+	0x6f, 0x2d, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x73, 0x2f, 0x73, 0x74, 0x72, 0x6f, 0x70,
+	0x74, 0x2f, 0x74, 0x65, 0x73, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -188,18 +248,19 @@ func file_stropt_testproto_test_proto_rawDescGZIP() []byte {
 	return file_stropt_testproto_test_proto_rawDescData
 }
 
-var file_stropt_testproto_test_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_stropt_testproto_test_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_stropt_testproto_test_proto_goTypes = []interface{}{
-	(*TestMessage)(nil),  // 0: testproto.TestMessage
-	(*ChildMessage)(nil), // 1: testproto.ChildMessage
+	(*MessageFixedLen)(nil),  // 0: testproto.MessageFixedLen
+	(*MessageMaxMinLen)(nil), // 1: testproto.MessageMaxMinLen
+	(*MessageMinLen)(nil),    // 2: testproto.MessageMinLen
+	(*MessageMaxLen)(nil),    // 3: testproto.MessageMaxLen
 }
 var file_stropt_testproto_test_proto_depIdxs = []int32{
-	1, // 0: testproto.TestMessage.some_msg:type_name -> testproto.ChildMessage
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_stropt_testproto_test_proto_init() }
@@ -209,7 +270,7 @@ func file_stropt_testproto_test_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_stropt_testproto_test_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TestMessage); i {
+			switch v := v.(*MessageFixedLen); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -221,7 +282,31 @@ func file_stropt_testproto_test_proto_init() {
 			}
 		}
 		file_stropt_testproto_test_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ChildMessage); i {
+			switch v := v.(*MessageMaxMinLen); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_stropt_testproto_test_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MessageMinLen); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_stropt_testproto_test_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MessageMaxLen); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -239,7 +324,7 @@ func file_stropt_testproto_test_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_stropt_testproto_test_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

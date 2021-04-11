@@ -5,14 +5,18 @@ import "protobuf/stroptpb/stroptpb.proto";
 
 option go_package = "github.com/sryoya/protoreflet-go-examples/stropt/testproto";
 
-message TestMessage {
-  string some_str = 1 [(stroptpb.opts) = {min_len: 3, max_len: 5}];
-  int32 some_int = 2;
-  float some_float = 3; 
-  bool some_bool = 4;
-  ChildMessage some_msg = 5;
+message MessageFixedLen {
+  string value = 1 [(stroptpb.opts) = {len: 6}];
 }
 
-message ChildMessage{
-  int32 some_int = 1;
+message MessageMaxMinLen {
+  string value = 1 [(stroptpb.opts) = {min_len: 3, max_len: 5}];
+}
+
+message MessageMinLen {
+  string value = 1 [(stroptpb.opts) = {min_len: 3}];
+}
+
+message MessageMaxLen {
+  string value = 1 [(stroptpb.opts) = {max_len: 5}];
 }

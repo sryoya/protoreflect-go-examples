@@ -13,11 +13,23 @@ func TestIsRefund(t *testing.T) {
 		input proto.Message
 		isErr bool
 	}{
-		"Return true if Refund": {
-			input: &testproto.TestMessage{
-				SomeStr: "123456",
+		"unmatch with expected length": {
+			input: &testproto.MessageFixedLen{
+				Value: "12345", // expects 6
 			},
-			isErr: false,
+			isErr: true,
+		},
+		"smaller than min length": {
+			input: &testproto.MessageMaxMinLen{
+				Value: "12", // expects 3~5
+			},
+			isErr: true,
+		},
+		"bigger than max length": {
+			input: &testproto.MessageMaxMinLen{
+				Value: "123456", // expects 3~5
+			},
+			isErr: true,
 		},
 	}
 
@@ -26,7 +38,7 @@ func TestIsRefund(t *testing.T) {
 			// execution
 			res := Validate(tc.input)
 
-			if tc.isErr != (res == nil) {
+			if tc.isErr == (res == nil) {
 				t.Errorf("expecting error is %v, but got:%v", tc.isErr, res)
 			}
 		})
