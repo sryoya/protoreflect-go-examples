@@ -15,5 +15,5 @@ message StringOpts {
     optional int32 max_len = 2;
     optional int32 min_len = 3;
 
-    // TODO: add more conditions like regexp, available/unavailable chars, etc.
+    optional string regexp = 10;
 }

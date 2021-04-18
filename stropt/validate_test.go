@@ -49,6 +49,21 @@ func TestValidate(t *testing.T) {
 			},
 			wantErrStr: "min Length outweighs max Length",
 		},
+		"invalid value in list against the specified len": {
+			input: &testproto.MessageWithList{
+				ListValues: []string{"123456", "12"}, // expects 6
+			},
+			wantErrStr: "invalid length, expected: 6, actual: 2",
+		},
+		"invalid value in map against the specified": {
+			input: &testproto.MessageWithMap{
+				MapValues: map[int32]string{ // expects 6
+					1: "123456",
+					2: "12",
+				},
+			},
+			wantErrStr: "invalid length, expected: 6, actual: 2",
+		},
 		// recursion check
 		"invalid value in child message": {
 			input: &testproto.ParentMessage{
@@ -64,6 +79,14 @@ func TestValidate(t *testing.T) {
 				Value: 1,
 			},
 			wantErrStr: "stropt is appended to non-string field",
+		},
+		"invalid proto, stropt appended in non-string map": {
+			input: &testproto.MessageStrOptOnIntMap{
+				MapValues: map[int32]int32{
+					1: 123456, // irrevant
+				},
+			},
+			wantErrStr: "stropt is appended to non-string map",
 		},
 	}
 

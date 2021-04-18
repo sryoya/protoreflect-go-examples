@@ -27,4 +27,18 @@ message ParentMessage { ChildMessage child = 1; }
 
 message ChildMessage { string value = 1 [ (stroptpb.opts) = {len : 6} ]; }
 
-message MessageStrOptOnInt { int32 value = 1 [ (stroptpb.opts) = {len : 6} ]; }
+message MessageStrOptOnInt { // invalid proto
+  int32 value = 1 [ (stroptpb.opts) = {len : 6} ];
+}
+
+message MessageWithList {
+  repeated string list_values = 1 [ (stroptpb.opts) = {len : 6} ];
+}
+
+message MessageWithMap {
+  map<int32, string> map_values = 1 [ (stroptpb.opts) = {len : 6} ];
+}
+
+message MessageStrOptOnIntMap { // invalid proto
+  map<int32, int32> map_values = 1 [ (stroptpb.opts) = {len : 6} ];
+}

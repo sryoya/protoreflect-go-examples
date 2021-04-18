@@ -23,8 +23,9 @@ func validate(m protoreflect.Message) error {
 	for k := 0; k < fds.Len(); k++ {
 		fd := fds.Get(k)
 		// call recursively
-		if fd.Kind() == protoreflect.MessageKind {
+		if fd.Kind() == protoreflect.MessageKind && !fd.IsMap() {
 			errs = appendErr(errs, validate(m.Get(fd).Message()))
+			continue
 		}
 
 		// get Stropt if it's set
@@ -34,13 +35,40 @@ func validate(m protoreflect.Message) error {
 			continue
 		}
 
-		// get value in the field
-		strVal, ok := m.Get(fd).Interface().(string)
-		if !ok {
+		// check if the field is string
+		if fd.Kind() != protoreflect.StringKind && !fd.IsMap() {
 			errs = appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
 			continue
 		}
-		// validate
+
+		if fd.IsList() {
+			strList := m.Get(fd).List()
+			for i := 0; i < strList.Len(); i++ {
+				strVal := strList.Get(i).Interface().(string)
+				errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
+			}
+			continue
+		}
+
+		if fd.IsMap() {
+			strMap := m.Get(fd).Map()
+			// strMap := m.Get(fd).Interface().(map[interface{}]string)
+			strMap.Range(func(mk protoreflect.MapKey, mv protoreflect.Value) bool {
+				strVal, ok := mv.Interface().(string)
+				if !ok {
+					errs = appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string map field, field name:%v", fd.Name()))
+					return false
+				}
+				errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
+				return true
+			})
+			// for _, strVal := range strMap {
+			// 	errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
+			// }
+			continue
+		}
+
+		strVal := m.Get(fd).Interface().(string)
 		errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
 	}
 	return errs
