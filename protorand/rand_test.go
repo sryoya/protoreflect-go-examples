@@ -9,7 +9,15 @@ import (
 	"github.com/sryoya/protoreflet-go-examples/protorand/testproto"
 )
 
-func TestNew(t *testing.T) {
+func init() {
+	// inject random generated value to be fixed
+	randomInt32 = func() int32 { return 10 }
+	randomFloat = func() float32 { return 10.1 }
+	randomString = func(int) string { return "Gopher" }
+	randomBool = func() bool { return true }
+}
+
+func TestEmbedValues(t *testing.T) {
 	target := &testproto.TestMessage{}
 
 	expected := &testproto.TestMessage{
@@ -20,13 +28,16 @@ func TestNew(t *testing.T) {
 		SomeMsg: &testproto.ChildMessage{
 			SomeInt: 10,
 		},
+		SomeSlice: []string{"Gopher"},
+		SomeMsgs: []*testproto.ChildMessage{
+			{SomeInt: 10},
+		},
+		SomeMap: map[int32]*testproto.ChildMessage{
+			10: {
+				SomeInt: 10,
+			},
+		},
 	}
-
-	// inject random generated value to be fixed
-	randomInt32 = func() int32 { return 10 }
-	randomFloat = func() float32 { return 10.1 }
-	randomString = func(int) string { return "Gopher" }
-	randomBool = func() bool { return true }
 
 	EmbedValues(target)
 
