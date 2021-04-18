@@ -13,6 +13,10 @@ message MessageMaxMinLen {
   string value = 1 [(stroptpb.opts) = {min_len: 3, max_len: 5}];
 }
 
+message MessageInvalidMaxMinLen {
+  string value = 1 [(stroptpb.opts) = {min_len: 5, max_len: 3}];
+}
+
 message MessageMinLen {
   string value = 1 [(stroptpb.opts) = {min_len: 3}];
 }

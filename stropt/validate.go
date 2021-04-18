@@ -11,28 +11,38 @@ import (
 )
 
 // Validate checks if the proto message has the valid value compliant to the setting in stropt
-func Validate(pb proto.Message) []error {
+func Validate(pb proto.Message) error {
 	m := pb.ProtoReflect()
-	var errs []error
+	var errs error
+	// TODO: Range ignores unpopulated fields
 	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		// get Stropt if it's set
 		opts := fd.Options().(*descriptorpb.FieldOptions)
 		so, ok := proto.GetExtension(opts, stroptpb.E_Opts).(*stroptpb.StringOpts)
 		if !ok {
 			return true
 		}
-
+		// get value in the field
 		strVal, ok := m.Get(fd).Interface().(string)
 		if !ok {
+			appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
 			return true
 		}
-
-		err := validateLength(so, strVal)
-		if err != nil {
-			errs = append(errs, err)
-		}
-
+		// validate
+		errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
 		return true
 	})
+	return errs
+}
+
+func validateValue(fieldName protoreflect.Name, opts *stroptpb.StringOpts, v string) error {
+	var errs error
+	errs = appendErr(errs, validateLength(opts, v))
+	// TODO: add other validations
+
+	if errs != nil {
+		errs = fmt.Errorf("\nField: %v, %v", fieldName, errs)
+	}
 
 	return errs
 }
@@ -58,15 +68,22 @@ func validateLength(opts *stroptpb.StringOpts, v string) error {
 	if !checkMinLen && !checkMaxLen {
 		return nil
 	}
-	if checkMinLen && checkMaxLen && *maxLen <= *minLen {
+	if checkMinLen && checkMaxLen && *maxLen < *minLen {
 		return fmt.Errorf("invalid length setup in proto file, min Length outweighs max Length")
 	}
 	if checkMinLen && actualLen < int(*minLen) {
-		return fmt.Errorf("invalid length, expected longer than or equal to %v, but actual: %v", int(*minLen), actualLen)
+		return fmt.Errorf("invalid length, the value must be longer than or equal to %v, but actual: %v", int(*minLen), actualLen)
 	}
 	if checkMaxLen && actualLen > int(*maxLen) {
-		return fmt.Errorf("invalid length, expected shorter than or equal to %v, but actual: %v", int(*maxLen), actualLen)
+		return fmt.Errorf("invalid length, the value must be shorter than or equal to %v, but actual: %v", int(*maxLen), actualLen)
 	}
 
 	return nil
+}
+
+func appendErr(original, new error) error {
+	if new == nil {
+		return original
+	}
+	return fmt.Errorf("%v;%v", new, original)
 }
