@@ -27,6 +27,4 @@ message ParentMessage { ChildMessage child = 1; }
 
 message ChildMessage { string value = 1 [ (stroptpb.opts) = {len : 6} ]; }
 
-message MessageStrOptOnInt {
-  int32 value = 1  [ (stroptpb.opts) = {len : 6} ];
-}
+message MessageStrOptOnInt { int32 value = 1 [ (stroptpb.opts) = {len : 6} ]; }
