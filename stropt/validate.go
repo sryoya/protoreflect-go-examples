@@ -35,9 +35,32 @@ func validate(m protoreflect.Message) error {
 			continue
 		}
 
+		if fd.IsMap() {
+			strMap := m.Get(fd).Map()
+			strMap.Range(func(mk protoreflect.MapKey, mv protoreflect.Value) bool {
+				strVal, ok := mv.Interface().(string)
+				if !ok {
+					errs = appendErr(errs, fmt.Errorf(
+						"invalid proto def, stropt is appended to non-string map field, field name:%v",
+						fd.Name(),
+					),
+					)
+					return false
+				}
+				errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
+				return true
+			})
+			continue
+		}
+
 		// check if the field is string
-		if fd.Kind() != protoreflect.StringKind && !fd.IsMap() {
-			errs = appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
+		if fd.Kind() != protoreflect.StringKind {
+			errs = appendErr(errs,
+				fmt.Errorf(
+					"invalid proto def, stropt is appended to non-string field, field name:%v",
+					fd.Name(),
+				),
+			)
 			continue
 		}
 
@@ -50,24 +73,6 @@ func validate(m protoreflect.Message) error {
 			continue
 		}
 
-		if fd.IsMap() {
-			strMap := m.Get(fd).Map()
-			// strMap := m.Get(fd).Interface().(map[interface{}]string)
-			strMap.Range(func(mk protoreflect.MapKey, mv protoreflect.Value) bool {
-				strVal, ok := mv.Interface().(string)
-				if !ok {
-					errs = appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string map field, field name:%v", fd.Name()))
-					return false
-				}
-				errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
-				return true
-			})
-			// for _, strVal := range strMap {
-			// 	errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
-			// }
-			continue
-		}
-
 		strVal := m.Get(fd).Interface().(string)
 		errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
 	}
@@ -77,7 +82,7 @@ func validate(m protoreflect.Message) error {
 func validateValue(fieldName protoreflect.Name, opts *stroptpb.StringOpts, v string) error {
 	var errs error
 	errs = appendErr(errs, validateLength(opts, v))
-	// TODO: add other validations
+	// TODO: add other validations here
 
 	if errs != nil {
 		errs = fmt.Errorf("\nField: %v, %v", fieldName, errs)
