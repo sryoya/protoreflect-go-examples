@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/sryoya/protoreflet-go-examples/stropt"
-	"github.com/sryoya/protoreflet-go-examples/stropt/testproto"
+	"github.com/sryoya/protoreflect-go-examples/example/testproto"
+	"github.com/sryoya/protoreflect-go-examples/stropt"
 )
 
 func main() {

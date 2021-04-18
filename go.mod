@@ -1,4 +1,4 @@
-module github.com/sryoya/protoreflet-go-examples
+module github.com/sryoya/protoreflect-go-examples
 
 go 1.16
 

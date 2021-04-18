@@ -3,7 +3,7 @@ package testproto;
 
 import "protobuf/stroptpb/stroptpb.proto";
 
-option go_package = "github.com/sryoya/protoreflet-go-examples/example/testproto";
+option go_package = "github.com/sryoya/protoreflect-go-examples/example/testproto";
 
 message UpdateAccountIDRequest {
   string iD = 1 [ (stroptpb.opts) = {min_len : 6, max_len: 12} ];

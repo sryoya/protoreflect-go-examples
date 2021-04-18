@@ -7,7 +7,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 
-	"github.com/sryoya/protoreflet-go-examples/protobuf/stroptpb"
+	"github.com/sryoya/protoreflect-go-examples/protobuf/stroptpb"
 )
 
 // Validate checks if the proto message has the valid value compliant to the setting in stropt

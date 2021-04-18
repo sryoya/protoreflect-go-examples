@@ -6,11 +6,11 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/testing/protocmp"
 
-	"github.com/sryoya/protoreflet-go-examples/protorand/testproto"
+	"github.com/sryoya/protoreflect-go-examples/protorand/testproto"
 )
 
 func init() {
-	// inject random generated value to be fixed
+	// inject random generated values to be fixed
 	randomInt32 = func() int32 { return 10 }
 	randomFloat = func() float32 { return 10.1 }
 	randomString = func(int) string { return "Gopher" }

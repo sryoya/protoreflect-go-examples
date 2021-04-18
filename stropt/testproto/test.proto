@@ -3,7 +3,7 @@ package testproto;
 
 import "protobuf/stroptpb/stroptpb.proto";
 
-option go_package = "github.com/sryoya/protoreflet-go-examples/stropt/testproto";
+option go_package = "github.com/sryoya/protoreflect-go-examples/stropt/testproto";
 
 message MessageFixedLen {
   string value = 1 [ (stroptpb.opts) = {len : 6} ];

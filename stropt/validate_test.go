@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/sryoya/protoreflet-go-examples/stropt/testproto"
+	"github.com/sryoya/protoreflect-go-examples/stropt/testproto"
 )
 
 func TestValidate(t *testing.T) {
