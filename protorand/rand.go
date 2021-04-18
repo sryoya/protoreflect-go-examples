@@ -7,7 +7,6 @@ import (
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/dynamicpb"
 )
 
 var (
@@ -24,47 +23,58 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// EmbedRandValue embeds randoms value to fields in the provided proto message
-func EmbedValues(msg proto.Message) error {
-	mds := msg.ProtoReflect().Descriptor()
-	dm, err := NewDynamicProto(mds)
-	if err != nil {
-		return nil
-	}
+// // EmbedValues embeds randoms value to fields in the provided proto message
+// func EmbedValues(msg proto.Message) error {
+// 	mds := msg.ProtoReflect().Descriptor()
+// 	dm, err := NewDynamicProtoRand(mds)
+// 	if err != nil {
+// 		return nil
+// 	}
 
-	proto.Merge(msg, dm)
-	return nil
-}
+// 	proto.Merge(msg, dm)
+// 	return nil
+// }
 
-// NewDynamicProto embeds value to Proto
-func NewDynamicProto(mds protoreflect.MessageDescriptor) (*dynamicpb.Message, error) {
-	dm := dynamicpb.NewMessage(mds)
-	fds := mds.Fields()
-	for k := 0; k < fds.Len(); k++ {
-		fd := fds.Get(k)
-		switch fd.Kind() {
-		case protoreflect.Int32Kind:
-			dm.Set(fd, protoreflect.ValueOfInt32(randomInt32()))
-		case protoreflect.FloatKind:
-			dm.Set(fd, protoreflect.ValueOfFloat32(randomFloat()))
-		case protoreflect.StringKind:
-			dm.Set(fd, protoreflect.ValueOfString(randomString(10)))
-		case protoreflect.BoolKind:
-			dm.Set(fd, protoreflect.ValueOfBool(randomBool()))
-		case protoreflect.MessageKind:
-			// process recursively
-			rm, err := NewDynamicProto(fd.Message())
-			if err != nil {
-				return nil, err
-			}
-			dm.Set(fd, protoreflect.ValueOfMessage(rm))
-		default:
-			return nil, fmt.Errorf("unexpected type: %v", fd.Kind())
-		}
-	}
+// // NewDynamicProtoRand created dynamicpb with assiging random value to proto
+// func NewDynamicProtoRand(mds protoreflect.MessageDescriptor) (*dynamicpb.Message, error) {
+// 	dm := dynamicpb.NewMessage(mds)
+// 	fds := mds.Fields()
+// 	for k := 0; k < fds.Len(); k++ {
+// 		fd := fds.Get(k)
 
-	return dm, nil
-}
+// 		if fd.IsList() {
+// 			// TODO
+// 			continue
+// 		}
+
+// 		if fd.IsMap() {
+// 			// TODO
+// 			continue
+// 		}
+
+// 		switch fd.Kind() {
+// 		case protoreflect.Int32Kind:
+// 			dm.Set(fd, protoreflect.ValueOfInt32(randomInt32()))
+// 		case protoreflect.FloatKind:
+// 			dm.Set(fd, protoreflect.ValueOfFloat32(randomFloat()))
+// 		case protoreflect.StringKind:
+// 			dm.Set(fd, protoreflect.ValueOfString(randomString(10)))
+// 		case protoreflect.BoolKind:
+// 			dm.Set(fd, protoreflect.ValueOfBool(randomBool()))
+// 		case protoreflect.MessageKind:
+// 			// process recursively
+// 			rm, err := NewDynamicProtoRand(fd.Message())
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			dm.Set(fd, protoreflect.ValueOfMessage(rm))
+// 		default:
+// 			return nil, fmt.Errorf("unexpected type: %v", fd.Kind())
+// 		}
+// 	}
+
+// 	return dm, nil
+// }
 
 func genRandInt32() int32 {
 	return rand.Int31()
@@ -86,31 +96,51 @@ func genRandBool() bool {
 	return rand.Int31()%2 == 0
 }
 
-// Version without using dynamicpb.
-// It's fine, but difficult to execute recursively
-//
-// // EmbedRandValue embeds randoms value to fields in the prvoded proto message
-// func EmbedRandValue(msg proto.Message) error {
-// 	pm := msg.ProtoReflect()
-// 	mds := pm.Descriptor()
-// 	fds := mds.Fields()
-// 	for k := 0; k < fds.Len(); k++ {
-// 		fd := fds.Get(k)
-// 		switch fd.Kind() {
-// 		case protoreflect.Int32Kind:
-// 			pm.Set(fd, protoreflect.ValueOfInt32(ran.Int31()))
-// 		case protoreflect.FloatKind:
-// 			pm.Set(fd, protoreflect.ValueOfFloat32(ran.Float32()))
-// 		case protoreflect.StringKind:
-// 			pm.Set(fd, protoreflect.ValueOfString(randomString(10)))
-// 		case protoreflect.BoolKind:
-// 			pm.Set(fd, protoreflect.ValueOfBool(randomBool()))
-// 		case protoreflect.MessageKind:
-// 			// pm.Set(fd, protoreflect.ValueOfMessage(fd.Message()))
-// 		default:
-// 			return fmt.Errorf("unexpected type: %v", fd.Kind())
-// 		}
-// 	}
+// EmbedValues embeds randoms value to fields in the provided proto message
+func EmbedValues(msg proto.Message) error {
+	pm := msg.ProtoReflect()
+	return embedValues(pm)
+}
 
-// 	return nil
-// }
+// embedValues embeds randoms value to fields in the provioded protoreflect message
+func embedValues(pm protoreflect.Message) error {
+	fds := pm.Descriptor().Fields()
+	for k := 0; k < fds.Len(); k++ {
+		fd := fds.Get(k)
+
+		if fd.IsList() {
+			list := pm.Mutable(fd).List()
+			list.Append(protoreflect.ValueOfString("test"))
+			pm.Set(fd, protoreflect.ValueOfList(list))
+			// TODO
+			continue
+		}
+		if fd.IsMap() {
+			// TODO
+			continue
+		}
+
+		switch fd.Kind() {
+		case protoreflect.Int32Kind:
+			pm.Set(fd, protoreflect.ValueOfInt32(randomInt32()))
+		case protoreflect.FloatKind:
+			pm.Set(fd, protoreflect.ValueOfFloat32(randomFloat()))
+		case protoreflect.StringKind:
+			pm.Set(fd, protoreflect.ValueOfString(randomString(10)))
+		case protoreflect.BoolKind:
+			pm.Set(fd, protoreflect.ValueOfBool(randomBool()))
+		case protoreflect.MessageKind:
+			// process recursively
+			child := pm.Mutable(fd).Message()
+			err := embedValues(child)
+			if err != nil {
+				return err
+			}
+			pm.Set(fd, protoreflect.ValueOfMessage(child))
+		default:
+			return fmt.Errorf("unexpected type: %v", fd.Kind())
+		}
+	}
+
+	return nil
+}
