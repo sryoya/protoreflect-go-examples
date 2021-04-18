@@ -14,6 +14,7 @@ func TestValidate(t *testing.T) {
 		input      proto.Message
 		wantErrStr string
 	}{
+		// length validations
 		"valid with the specifed length": {
 			input: &testproto.MessageFixedLen{
 				Value: "123456", // expects 6
@@ -44,9 +45,25 @@ func TestValidate(t *testing.T) {
 		},
 		"invalid proto, min length > max length": {
 			input: &testproto.MessageInvalidMaxMinLen{
-				Value: "12345", // irrevant
+				Value: "", // irrevant
 			},
 			wantErrStr: "min Length outweighs max Length",
+		},
+		// recursion check
+		"invalid value in child message": {
+			input: &testproto.ParentMessage{
+				Child: &testproto.ChildMessage{
+					Value: "12345", // expects 6
+				},
+			},
+			wantErrStr: "expected: 6, actual: 5",
+		},
+		// common check
+		"invalid proto, stropt appended in non-string field": {
+			input: &testproto.MessageStrOptOnInt{
+				Value: 1,
+			},
+			wantErrStr: "stropt is appended to non-string field",
 		},
 	}
 

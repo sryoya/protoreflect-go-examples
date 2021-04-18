@@ -6,21 +6,27 @@ import "protobuf/stroptpb/stroptpb.proto";
 option go_package = "github.com/sryoya/protoreflet-go-examples/stropt/testproto";
 
 message MessageFixedLen {
-  string value = 1 [(stroptpb.opts) = {len: 6}];
+  string value = 1 [ (stroptpb.opts) = {len : 6} ];
+  int32 int_value = 2; // irrevant field, in order to check if non-string field
+                       // is just ignored as long as it doesn't have the value
 }
 
 message MessageMaxMinLen {
-  string value = 1 [(stroptpb.opts) = {min_len: 3, max_len: 5}];
+  string value = 1 [ (stroptpb.opts) = {min_len : 3, max_len : 5} ];
 }
 
 message MessageInvalidMaxMinLen {
-  string value = 1 [(stroptpb.opts) = {min_len: 5, max_len: 3}];
+  string value = 1 [ (stroptpb.opts) = {min_len : 5, max_len : 3} ];
 }
 
-message MessageMinLen {
-  string value = 1 [(stroptpb.opts) = {min_len: 3}];
-}
+message MessageMinLen { string value = 1 [ (stroptpb.opts) = {min_len : 3} ]; }
 
-message MessageMaxLen {
-  string value = 1 [(stroptpb.opts) = {max_len: 5}];
+message MessageMaxLen { string value = 1 [ (stroptpb.opts) = {max_len : 5} ]; }
+
+message ParentMessage { ChildMessage child = 1; }
+
+message ChildMessage { string value = 1 [ (stroptpb.opts) = {len : 6} ]; }
+
+message MessageStrOptOnInt {
+  int32 value = 1  [ (stroptpb.opts) = {len : 6} ];
 }

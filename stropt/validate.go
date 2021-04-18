@@ -12,26 +12,37 @@ import (
 
 // Validate checks if the proto message has the valid value compliant to the setting in stropt
 func Validate(pb proto.Message) error {
-	m := pb.ProtoReflect()
+	return validate(pb.ProtoReflect())
+}
+
+// Validate checks if the proto message has the valid value compliant to the setting in stropt
+func validate(m protoreflect.Message) error {
+	md := m.Descriptor()
+	fds := md.Fields()
 	var errs error
-	// TODO: Range ignores unpopulated fields
-	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+	for k := 0; k < fds.Len(); k++ {
+		fd := fds.Get(k)
+		// call recursively
+		if fd.Kind() == protoreflect.MessageKind {
+			errs = appendErr(errs, validate(m.Get(fd).Message()))
+		}
+
 		// get Stropt if it's set
 		opts := fd.Options().(*descriptorpb.FieldOptions)
 		so, ok := proto.GetExtension(opts, stroptpb.E_Opts).(*stroptpb.StringOpts)
-		if !ok {
-			return true
+		if !ok || so == nil {
+			continue
 		}
+
 		// get value in the field
 		strVal, ok := m.Get(fd).Interface().(string)
 		if !ok {
-			appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
-			return true
+			errs = appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
+			continue
 		}
 		// validate
 		errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
-		return true
-	})
+	}
 	return errs
 }
 
@@ -85,5 +96,38 @@ func appendErr(original, new error) error {
 	if new == nil {
 		return original
 	}
+	if original == nil {
+		return new
+	}
 	return fmt.Errorf("%v;%v", new, original)
 }
+
+// We can implement the function using."m.Range", but m.Range ignores the default value
+// // Validate checks if the proto message has the valid value compliant to the setting in stropt
+// func Validate(pb proto.Message) error {
+// 	m := pb.ProtoReflect()
+// 	var errs error
+// 	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+// 		// call recursively
+// 		if fd.Kind() == protoreflect.MessageKind {
+// 			appendErr(errs, Validate(fd.Message().(proto.Message)))
+// 		}
+
+// 		// get Stropt if it's set
+// 		opts := fd.Options().(*descriptorpb.FieldOptions)
+// 		so, ok := proto.GetExtension(opts, stroptpb.E_Opts).(*stroptpb.StringOpts)
+// 		if !ok {
+// 			return true
+// 		}
+// 		// get value in the field
+// 		strVal, ok := m.Get(fd).Interface().(string)
+// 		if !ok {
+// 			appendErr(errs, fmt.Errorf("invalid proto def, stropt is appended to non-string field, field name:%v", fd.Name()))
+// 			return true
+// 		}
+// 		// validate
+// 		errs = appendErr(errs, validateValue(fd.Name(), so, strVal))
+// 		return true
+// 	})
+// 	return errs
+// }
