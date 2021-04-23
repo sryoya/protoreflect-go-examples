@@ -12,7 +12,7 @@ It was presented at [Go Conference Tokyo](https://gocon.jp/) 2021 Spring.
 
 ### 1. String with custom regulations
 
-[proto defenition](./protoreflet-go-examples/protobuf/stroptpb)
+[proto defenition](./protobuf/stroptpb)
 
 [implementation](./stropt/validate.go)
 
@@ -113,7 +113,7 @@ Go Protocol Buffers API v2のリフレクション機能の使用例になりま
 
 ### 1. String with custom regulations
 
-[proto defenition](./protoreflet-go-examples/protobuf/stroptpb)
+[proto defenition](./protobuf/stroptpb)
 
 [implementation](./stropt/validate.go)
 
